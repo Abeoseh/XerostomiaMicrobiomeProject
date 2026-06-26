@@ -4,6 +4,7 @@
 .RData
 .Rhistory
 mcode
+.Rproj.user/
 csv_files/
 output/
 downloads/
