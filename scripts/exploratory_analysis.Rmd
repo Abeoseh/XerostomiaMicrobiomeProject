@@ -1,0 +1,278 @@
+---
+title: "Exploratory Analysis"
+output: html_document
+date: "2025-08-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(readxl))
+suppressPackageStartupMessages(library(writexl))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(forcats))
+suppressPackageStartupMessages(library(tidyverse))
+
+output = "./output/with_men"
+# output = "./output/without_men"
+
+getwd()
+knitr::opts_knit$set(root.dir = "C:/Users/brean/Downloads/masters/Atrium")
+getwd()
+```
+
+## exploratory analyses:
+
+-   avg taxa detected per sample
+-   total taxa detected per group
+-   demographics tests (ex. M vs. F) - I've attached an example of a demographics table. You can use MWU or Chi-square for statistical comparisons among the groups
+
+## Read in the file
+
+### With Men
+
+```{r microbiome, echo = FALSE}
+
+
+## read file 
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25.xlsx")
+microbiome_data <- relocate(microbiome_data, Group, Condition, Site)
+microbiome_data <- microbiome_data[,1:length(microbiome_data)-1] %>% as.data.frame()
+microbiome_data$Condition[microbiome_data$Condition == "None"] <- ""
+```
+
+## Make Microbiome Data without Men
+
+```{r}
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25.xlsx")
+microbiome_data[["XOB ID"]] <- sapply(str_split(microbiome_data$Taxa, "\\."), `[`, 1)
+
+
+metadata <- read_excel("csv_files/XOB Clinical Data Microbiome + Metatranscriptomics AH 07 23 2025.xlsx") |>
+  select(Sex, "XOB ID") |>
+  filter(Sex == "F")
+metadata[["XOB ID"]] <- paste(sapply(str_split(metadata[["XOB ID"]], "_."), `[`, 1),sapply(str_split(metadata[["XOB ID"]], "_."), `[`, 2),sep="0")
+
+
+microbiome_data <- merge(microbiome_data, metadata, by = "XOB ID") |> relocate(Group, Condition, Site, Sex, "XOB ID")
+
+microbiome_data$Sex = NULL
+microbiome_data[["XOB ID"]] = NULL
+
+write_xlsx(microbiome_data, "csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females.xlsx", col_names = TRUE)
+
+microbiome_data <- relocate(microbiome_data, Group, Condition, Site)
+microbiome_data <- microbiome_data[,1:length(microbiome_data)-1] %>% as.data.frame()
+microbiome_data$Condition[microbiome_data$Condition == "None"] <- ""
+
+```
+
+```{r}
+## read file 
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females.xlsx")
+microbiome_data <- relocate(microbiome_data, Group, Condition, Site)
+microbiome_data <- microbiome_data[,1:length(microbiome_data)-1] %>% as.data.frame()
+microbiome_data$Condition[microbiome_data$Condition == "None"] <- ""
+
+microbiome_data
+```
+
+## Average Amount of Taxa Per Sample
+
+### Average of the Taxa For each Group
+
+### Compute the mean
+
+```{r, echo = FALSE}
+avg_taxa_per_sample <- select(microbiome_data, -c(colnames(microbiome_data[,1:5]))) %>% base::apply(MARGIN = 1, FUN = mean) 
+
+avg_taxa_per_sample_df <- cbind(select(microbiome_data, c(colnames(microbiome_data[,1:4]))), data.frame(sample_mean = avg_taxa_per_sample) )
+```
+
+### Plot the results
+
+```{r, echo = FALSE}
+png("./output/exploratory_analyses/avg taxa per sample- Group.png")
+
+avg_taxa_per_sample_df %>%
+  select(Taxa, Group, sample_mean) %>%
+  arrange(Group, desc(Group)) %>%
+  dplyr::mutate(Taxa = fct_inorder(Taxa) ) %>%
+  ggplot(aes(x = Taxa, y = sample_mean)) +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+  geom_bar(aes(fill = Group), stat = "identity") + 
+  labs(x = "")
+
+dev.off()
+
+
+
+avg_taxa_per_sample_df$Group_Condition <- paste(avg_taxa_per_sample_df$Group, avg_taxa_per_sample_df$Condition)
+
+
+png("./output/exploratory_analyses/avg taxa per sample- Group_Condition.png")
+
+avg_taxa_per_sample_df %>%
+  select(Taxa, Group_Condition, sample_mean) %>%
+  arrange(Group_Condition, desc(Group_Condition)) %>%
+  dplyr::mutate(Taxa = fct_inorder(Taxa) ) %>%
+  ggplot( aes(y = sample_mean, x = Taxa, fill = Group_Condition)) +
+    geom_bar(stat = "identity") +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+    labs(fill = "Group Condition", x = "")
+dev.off()
+
+rm(avg_taxa_per_sample_df, avg_taxa_per_sample)
+
+```
+
+### Average amount of taxa greater than 0
+
+```{r}
+compute_avg <- function(metadata_column){
+  
+  metadata_column_Var <- sym(metadata_column)
+  
+    avg_taxa_per_group <- microbiome_data |> select(!!metadata_column_Var, c(colnames(microbiome_data[,6:length(microbiome_data)])))  %>% 
+      pivot_longer(-c(!!metadata_column_Var), names_to = "bacteria", values_to = "count" ) |> group_by(!!metadata_column_Var) |> filter(count > 0) |> count(bacteria) 
+  
+  avg_taxa_per_group$n[avg_taxa_per_group$n != 0] <- 1
+  # print(avg_taxa_per_group)
+  
+  formula <- as.formula(paste("n ~", metadata_column) )    
+
+  avg_taxa_per_group = aggregate(avg_taxa_per_group, formula, FUN = sum)
+  
+  # avg_taxa_per_group <- microbiome_data |> select(!!metadata_column_Var, c(colnames(microbiome_data[,6:length(microbiome_data)])))  %>% 
+  #     pivot_longer(-c(!!metadata_column_Var), names_to = "bacteria", values_to = "avg" )
+  # 
+  # formula <- as.formula(paste("avg ~", metadata_column) )    
+  avg_taxa_per_group$n <- (avg_taxa_per_group$n)/(dim(microbiome_data)[1])
+  aggregate(avg_taxa_per_group, formula, FUN = mean) %>% print()
+  plot <- aggregate(avg_taxa_per_group, formula, FUN = mean) |>
+    
+    ggplot(aes(y = n, x=!!metadata_column_Var, fill=!!metadata_column_Var)) +
+    geom_bar(stat = "identity") +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+    labs(fill = metadata_column, x = "", y = "average") 
+  
+  png(paste("./output/without_men/exploratory_analyses/bacterial avg of ",metadata_column,".png", sep=""))  
+  
+   print(plot)
+  
+  dev.off()
+  
+}
+
+microbiome_data$Condition[microbiome_data$Condition == ""] <- "Control"
+compute_avg("Group")
+compute_avg("Site")
+compute_avg("Condition")
+```
+
+## Total Taxa Detected per Group
+
+### Compute the sum of Group
+
+```{r, echo = FALSE}
+
+compute_sum <- function(metadata_column){
+  
+  metadata_column_Var <- sym(metadata_column)
+  
+  amount_taxa_per_group <- microbiome_data |> select(!!metadata_column_Var, c(colnames(microbiome_data[,6:length(microbiome_data)])))  %>% 
+      pivot_longer(-c(!!metadata_column_Var), names_to = "bacteria", values_to = "count" ) |> group_by(!!metadata_column_Var) |> filter(count > 0) |> count(bacteria) 
+  
+  amount_taxa_per_group$n[amount_taxa_per_group$n != 0] <- 1
+  print(amount_taxa_per_group)
+  
+  formula <- as.formula(paste("n ~", metadata_column) )    
+
+  aggregate(amount_taxa_per_group, formula, FUN = sum) |> print()
+
+  plot <- aggregate(amount_taxa_per_group, formula, FUN = sum) |>
+    
+    ggplot(aes(y = n, x=!!metadata_column_Var, fill=!!metadata_column_Var)) +
+    geom_bar(stat = "identity") +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+    labs(fill = metadata_column, x = "") 
+  
+  png(paste(output, "/exploratory_analyses/bacterial sum of ",metadata_column,".png", sep=""))  
+  
+   print(plot)
+  
+  dev.off()
+  
+  }
+
+
+microbiome_data$Condition[microbiome_data$Condition == ""] <- "Control"
+compute_sum("Group")
+compute_sum("Site")
+compute_sum("Condition")
+```
+
+## Demographics tests (ex. M vs. F) -
+
+## I've attached an example of a demographics table. You can use MWU or Chi-square for statistical comparisons among the groups
+
+```{r}
+
+demographics <- read_excel("./csv_files/female demographics.xlsx")
+demographics
+```
+
+## Fishers exact test (small sample size) for gender
+
+```{r}
+demographics |> select (Groupa, M, F)
+demographics |> select (M, F) |> fisher.test()
+```
+
+## Fisher's exact test for Ethnicity
+
+```{r}
+demographics[,c(1, grep("Ethnicity", colnames(demographics)))]
+
+demographics[,c(grep("Ethnicity", colnames(demographics)))] |> fisher.test()
+```
+
+## Fisher's exact test for COD
+
+```{r}
+
+COD <- demographics[,c(1, grep("COD", colnames(demographics)))]
+
+keys <- lapply(COD[[ colnames(COD)[2] ]], function(s) {
+  as.integer(sub(":.*", "", strsplit(s, "/")[[1]]))
+})
+
+values <- lapply(COD[[ colnames(COD)[2] ]], function(s) {
+  as.integer(sub(".*:", "", strsplit(s, "/")[[1]]))
+})
+
+df <- data.frame()
+for ( i in range(1:length(keys))) {
+  temp <- as.data.frame(t( data.frame(values[[i]]) )) 
+  colnames(temp) <- keys[[i]]
+  df <- if (ncol(df) == 0) {temp} else {merge(df, temp,  by = intersect(names(df), names(temp)), all = TRUE, sort = F)}
+ }
+
+df[is.na(df)] <- 0
+
+print(df)
+df |> fisher.test()
+```
+
+## T-test for Age
+
+```{r}
+
+age <- read_excel("./csv_files/female demographics.xlsx", sheet = "age")
+
+age <- select(age, control, xerostomia)[-c(1),] 
+
+age
+t.test( as.numeric( age$control[!is.na(age$control)] ), as.numeric( age$xerostomia))
+```

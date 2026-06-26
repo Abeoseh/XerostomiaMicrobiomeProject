@@ -1,0 +1,17 @@
+*.out
+*.csv
+*.pdf
+csv_files/
+output/
+downloads/
+abstract/
+scripts/.RData
+scripts/.Rhistory
+scripts/.ipynb_checkpoints/STRING-checkpoint.ipynb
+scripts/.ipynb_checkpoints/STRING-checkpoint.py
+scripts/.ipynb_checkpoints/msea-checkpoint.ipynb
+scripts/.ipynb_checkpoints/msea-saliva-checkpoint.ipynb
+scripts/.ipynb_checkpoints/msea_example-checkpoint.ipynb
+scripts/.ipynb_checkpoints/multiple_genes_network-checkpoint.png
+scripts/.ipynb_checkpoints/roc-checkpoint.R
+scripts/__pycache__

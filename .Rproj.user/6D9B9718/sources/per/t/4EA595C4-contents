@@ -1,0 +1,62 @@
+## library packages 
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(readxl))
+# suppressPackageStartupMessages(library())
+
+
+## set working directory
+getwd()
+setwd("C:/Users/brean/Downloads/masters/atrium/XerostomiaMicrobiomeProject")
+getwd()
+
+## read file 
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25.xlsx")
+microbiome_data <- relocate(microbiome_data, Group, Condition, Site)
+microbiome_data <- microbiome_data[,1:length(microbiome_data)-1] %>% as.data.frame()
+
+
+groups <- unique(microbiome_data$Group)
+
+i = 0
+
+taxa_df <- data.frame()
+## mann whitney-u on individual taxa
+for (taxa_index in 6:length(microbiome_data)){
+  
+  
+  current_taxa <- microbiome_data[,c(1,taxa_index)] ## select the current taxa and the groups column
+  used_groups = c()
+  
+  for (group1 in groups){
+    
+    for (group2 in groups){
+      if (group1 != group2 & !(group2 %in% used_groups) ){
+        taxa1 <- current_taxa[current_taxa$Group == group1,2] %>% unlist()
+        taxa2 <- current_taxa[current_taxa$Group == group2,2] %>% unlist()
+        ## taxa1 + 1 because a lot of the values are 0
+        logchange <- mean(log2(taxa2 + 1))- mean(log2(taxa1 + 1)) ## mathemathically the same as log2(geo_mean(condition1 + 1)/geo_mean(condition2 + 1))
+        pvalue <- wilcox.test(taxa1, taxa2, alternative = "two.sided", paired = FALSE)$p.value * length(microbiome_data)- 5
+        taxa_df <- rbind(taxa_df, data.frame(bacteria = colnames(current_taxa)[2], group1 = group1, 
+                                             group2 = group2, log2foldchange = logchange, pvalue = pvalue) )
+      
+        
+        used_groups = append(used_groups, group1)
+        
+        if (i < 5 ){print(used_groups)
+          i = i + 1}
+        }
+    
+  
+  }}
+  
+  
+}
+
+
+filter(taxa_df, pvalue < 0.049) %>% View() ## 108 bacteria 
+
+write.csv(taxa_df, "./output/wilcox.csv", row.names = F)
+
+
+
+

@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/common/lib/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/common/lib/js/jquery.cookie.js"></script>
+  
+  <link rel="stylesheet" type="text/css" media="all" href="/static/common/lib/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" media="all" href="/static/common/css/base.css"/>
+  
+  
+<link rel="stylesheet" type="text/css" media="all" href="/static/apps/css/app_page.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/static/apps/css/app_stars.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/static/apps/css/js4cytoscape-style.css" />
+<script type="text/javascript" src="/static/common/lib/js/jquery.timeago.js"></script>
+<script type="text/javascript" src="/static/common/lib/js/Markdown.Converter.js"></script>
+<script type="text/javascript" src="/static/common/lib/js/Markdown.Sanitizer.js"></script>
+<script type="text/javascript" src="/static/common/js/markdown_util.js"></script>
+<script type="text/javascript" src="/static/apps/js/js4cytoscape-dev.js"></script>
+
+
+  <title>Cytoscape App Store - MCODE</title>
+
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P4QLZB5B8W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-P4QLZB5B8W');
+  </script>
+  
+</head>
+
+<body style="padding-top: 0;">
+  
+  <div class="navbar navbar-inverse navbar-static-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a href="/"><img src="/static/common/img/logo.png"></a>
+        <ul class="nav pull-right">
+          
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Submit an App <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/submit_app/">Submit a 3.0 App</a></li>
+	      <!--     <li><a href="http://www.cytoscape.org/plugin_submit.html" target="_blank">Submit a 2.x Plugin</a></li> -->
+              <li class="divider"></li>
+              <li><a target="_blank" href="https://github.com/cytoscape/cytoscape/wiki/Cytoscape-3.0-App-Development">Guide to 3.0 App Development</a></li>
+            </ul>
+          </li>
+          
+          <li>
+            <form action="/search" method="get" class="navbar-search pull-right">
+              <input type="text" name="q" value="" class="search-query" placeholder="Search the App Store">
+            </form>
+          </li>
+          
+          
+            <li ><a href="/users/login?next=/apps/mcode">Sign In</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top: 4em;">
+    
+    <div class="row"><div class="span6 offset3" id="cy-alerts"></div></div>
+    <script src="/static/common/js/msgs.js"></script>
+    
+    
+    
+<input type="hidden" name="csrfmiddlewaretoken" value="V4d0QAv9PxeOhKjXMG64qyEAxRVkVOklj6430VMr37Dq2u9X4u8afFN0t3LT6YHx">
+
+
+
+
+
+<div class="row">
+	
+	<div class="span1" style="line-height: 64px;">
+		<img style="vertical-align: middle;" src="/media/mcode/mcode_logo.png"/>
+	</div>
+	
+	<div class="span7">
+		<h2 id="app-name">
+			MCODE
+		</h2>
+		<b>Clusters a given network based on topology to find densely connected regions.</b>
+	</div>
+
+	
+	
+	
+</div>
+
+
+
+<div class="row">
+	<div class="span12" id="app-usage-info">
+		
+		<div class="rating-stars" data-placement="bottom" data-title="Rate this app! <a class='close' style='margin-left: 0.5em;'>&times;</a>" data-html="true">
+			<i class="rating-stars-empty icon-cy-stars-empty"></i>
+			<i class="rating-stars-filled icon-cy-stars-filled" style="width: 87.5%;"></i>
+			<span class="rating-spacer"></span>
+		</div>
+		<span id="rating-count">(32)</span>
+		
+
+		
+		
+		<span class="app-usage-info-divider"></span>
+		<a href="/download/stats/mcode/" target="_blank" class="has-tooltip" data-toggle="tooltip" data-title="Click to view the download stats.">
+			231593 downloads
+		</a>
+		
+		
+
+		
+		
+		<a> | </a>
+		<a href="https://www.ncbi.nlm.nih.gov/pubmed?linkname=pubmed_pubmed_citedin&from_uid=12525261" target="_blank" class="has-tooltip" data-toggle="tooltip" data-title="Search PubMed for articles citing this app.">  citations</a>
+
+		
+		
+		
+<a> | </a>
+<a href="https://www.biostars.org/local/search/page/?q=cytoscape+MCODE" target="_blank" class="has-tooltip" data-toggle="tooltip" data-title="Search BioStar for discussions about this app.">discussions</a>
+
+		<span class="app-usage-info-divider"></span>
+
+		
+		
+		<img src="/static/apps/img/cy3_sticker.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is available for Cytoscape 3.0 and above.">
+		
+
+		
+
+		
+		<a href="https://github.com/BaderLab/MCODE" target="_blank">
+			<img src="/static/apps/img/open-source.png" class="has-tooltip" data-toggle="tooltip" data-title="This app is open source.">
+		</a>
+		
+		
+		<a href="https://github.com/BaderLab/MCODE/blob/master/src/main/java/ca/utoronto/tdccbr/mcode/internal/CyActivator.java#L140" target="_blank">
+			<img src="/static/apps/img/automation.png" class="has-tooltip" data-toggle="tooltip" data-title="This app supports automation.">
+		</a>
+		
+		
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="span8">
+		
+		<ul id="cy-app-info-tabs" class="nav nav-tabs">
+			<li class="active">
+				<a href="#cy-app-details-tab" data-toggle="tab">
+					<b>Details</b>
+				</a>
+			</li>
+			
+			<li>
+				<a href="#cy-app-releases-tab" data-toggle="tab">
+					<b>Release History</b>
+				</a>
+			</li>
+			
+		</ul>
+		
+
+		
+		<div class="tab-content">
+			
+			<div class="tab-pane active" id="cy-app-details-tab">
+				
+				
+				<div class="row">
+					<div class="span8">
+						Categories:
+						
+						<a class="link" href="/apps/with_tag/automation">automation</a>, 
+						
+						<a class="link" href="/apps/with_tag/clustering">clustering</a>, 
+						
+						<a class="link" href="/apps/with_tag/graphanalysis">graph analysis</a>
+						
+					</div>
+				</div>
+				
+				
+
+				
+				
+				<div class="row">
+					<div class="span8" id="cy-app-screenshots">
+						
+						<a href="/media/mcode/screenshots/mcode-2.png" target="_blank">
+							<img src="/media/mcode/thumbnails/mcode-2.png.png"/>
+						</a>
+						
+						<a href="/media/mcode/screenshots/mcode-1.png" target="_blank">
+							<img src="/media/mcode/thumbnails/mcode-1.png.png"/>
+						</a>
+						
+					</div>
+				</div>
+				
+				
+
+				
+				
+				<div class="row">
+					<div class="span8" id="cy-app-details-md">MCODE finds clusters (highly interconnected regions) in a network. Clusters mean different things in different types of networks. For instance, clusters in a protein-protein interaction network are often protein complexes and parts of pathways, while clusters in a protein similarity network represent protein families.
+
+The newest versions of MCODE (1.5+) also supports *Cytoscape Automation* by providing two commands: 
+
+* `mcode cluster`
+* `mcode view`</div>
+				</div>
+				
+				
+
+				
+				
+				<div class="row">
+					<div class="span8">
+						Authors:
+						<ul>
+							
+							<li>
+								<a href="/apps/with_author/Gary%20Bader">
+									Gary Bader  (University of Toronto)
+								</a>
+							</li>
+							
+							<li>
+								<a href="/apps/with_author/Christian%20Lopes">
+									Christian Lopes  (University of Toronto)
+								</a>
+							</li>
+							
+							<li>
+								<a href="/apps/with_author/Vuk%20Pavlovic">
+									Vuk Pavlovic  (University of Toronto)
+								</a>
+							</li>
+							
+						</ul>
+					</div>
+				</div>
+				
+				
+			</div>
+			
+				
+			
+			
+			<div class="tab-pane" id="cy-app-releases-tab">
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/2.0.3">
+								2.0.3
+							</a>
+							<small><abbr class="timeago" title="2023-07-04T12:04:18"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.9
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes an issue where the cluster images are rendered with incorrect network styles on Cytoscape 3.10.
+- The cluster images now have a better resolution on hi-res monitors--MCODE now uses the new Cytoscape API for generating thumbnails, which can also be used to generate hi-res thumbnails.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/2.0.2">
+								2.0.2
+							</a>
+							<small><abbr class="timeago" title="2022-06-02T10:54:42"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.8
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes a build issue that prevented the previous version of MCODE (v2.0.1) from being loaded by Cytoscape 3.9.x or below -- other than that, this build has the same features and bug fixes of version 2.0.1.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/2.0.1">
+								2.0.1
+							</a>
+							<small><abbr class="timeago" title="2022-06-01T12:01:55"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.8
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">**NOTE:** Do not use this version on **Cytoscape 3.9.x** or below. Use version ``2.0.2`` instead.
+
+- Fixes bug where all clusters were named &quot;Cluster 0&quot;.
+- Updates the version of the ``pax-logging-api`` dependency to ``1.11.13`` in order to prevent security warnings related to a _Log4J_ vulnerability issue.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/2.0.0">
+								2.0.0
+							</a>
+							<small><abbr class="timeago" title="2020-11-01T16:13:07"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.8
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">-  Renames MCODE&#x27;s **Node** columns.
+  - Adds the ``MCODE`` namespace to the columns.
+  - The app now creates one set of columns per analysis with the _result number_ (``n``) as suffix:
+     -  **MCODE::Score (``n``)**
+     -  **MCODE::Node Status (``n``)**
+     -  **MCODE::Clusters (``n``)**
+  - MCODE columns are _local_ now (instead of _shared_), which should improve performance in some situations.
+  - The set of MCODE columns are removed when the corresponding result is discarded.
+- Adds **Apply MCODE Style** option to MCODE&#x27;s overflow menu.
+  - It now creates 1 style per result (only when this option is selected) and the style is removed when its associated result is discarded.
+  - The correct MCODE style is applied automatically when selecting another result--only if another MCODE style is already set to the same analyzed network view.
+- It now makes sure that the MCODE panel is open when running the ``cluster`` command.
+- Fixes automation issue where calling the ``view`` command right after the ``cluster`` one could result in errors because the UI was not ready yet.
+- Fixes bug that prevents an analysis with the same parameters from being executed again after all results (or the last one) have been removed (&quot;parameters not changed&quot; message).
+  - It now checks all existing results and the error message tells which one has already been executed with the same parameters.
+- Fixes bug where MCODE columns don&#x27;t show their values on the _Explore_ panel.
+- Major performance improvements when creating the cluster images for results with 100+ clusters.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.6.1">
+								1.6.1
+							</a>
+							<small><abbr class="timeago" title="2020-04-28T11:11:40"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.7
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes bug where MCODE *Node* columns (e.g. &quot;MCODE_Score&quot;) were not created right away after an analysis, but only after the user selected another MCODE result.
+- Fixes bug where the cluster *Explore* table were not updated when another MCODE result were selected.
+- Fixes error that prevented the `mcode cluster` command from returning a successful JSON response.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.6">
+								1.6
+							</a>
+							<small><abbr class="timeago" title="2020-01-15T10:11:14"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.7
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Improved user interface that is less cluttered, makes a better use of the available space, and gives the user a couple of new useful features (e.g. Discard All Results).
+- Fixes bug where a cluster network would not get the correct style.
+- Fixes bug where MCODE results were not removed after destroying the source network.
+- Fixes bug that would popup the &quot;parameters not changed&quot; message every time after the first analysis.
+- Fixes issue where the cluster images would not be displayed in Cytoscape 3.8.
+- Other minor bug fixes.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.5.1">
+								1.5.1
+							</a>
+							<small><abbr class="timeago" title="2017-12-08T11:24:11"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.6
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes an issue that could prevent a cluster image from being generated when running MCODE for the first time through *commands* or *CyREST*.
+- Fixes a deadlock that could happen when switching from one *MCODE Result* panel to another.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.5.0">
+								1.5.0
+							</a>
+							<small><abbr class="timeago" title="2017-12-06T13:22:45"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.6
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- MCODE now supports *Cytoscape Automation* by providing two commands: 
+ - `mcode cluster`
+ - `mcode view`
+- The Result panel has been improved.
+- A few minor bug fixes.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.4.2">
+								1.4.2
+							</a>
+							<small><abbr class="timeago" title="2016-06-09T15:08:43"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.3
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes issue which could make Cytoscape run out of memory and freeze when running the analysis on large networks.
+- MCODE algorithm is now parallelized, which should improve the speed of analysis of large networks on computers with multiple cores.
+- Fixes error when performing the analysis on a network without a view in Cytoscape 3.4.
+- Minor UI improvements.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.4.1">
+								1.4.1
+							</a>
+							<small><abbr class="timeago" title="2014-12-17T12:42:22"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.2
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes bug that changed the k-core calculation when multiple edges were present--MCODE now only counts &quot;merged&quot; edges in order to get the degree of a node.
+- The cluster network (and cluster image) does not contain loops anymore if that option is false.
+- Fixes AWT thread deadlock that happened when MCODE showed the &quot;No clusters were found&quot; message dialog.
+- It no longer clears the clusters selection when switching between MCODE results.
+- MCODE panels are now disposed after the app is uninstalled or another version is installed.
+- UI improvements.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.4.0">
+								1.4.0
+							</a>
+							<small><abbr class="timeago" title="2014-01-24T15:16:32"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.0
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						<p><strong>Release Notes</strong></p>
+						<div class="cy-app-release-notes">- Fixes bugs that affected the calculation of network density.</div>
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.4.0.beta2">
+								1.4.0.beta2
+							</a>
+							<small><abbr class="timeago" title="2012-12-10T11:51:31"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.0
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="span8">
+						
+						<h4>
+							<a href="/download/mcode/1.4.0.beta1">
+								1.4.0.beta1
+							</a>
+							<small><abbr class="timeago" title="2012-08-29T11:56:52"></abbr></small>
+						</h4>
+						
+
+						
+						<p>
+							<strong>Works with</strong> Cytoscape
+							3.0
+						</p>
+						
+
+						
+						
+
+						
+						
+						
+
+						
+						
+						<hr>
+					</div>
+				</div>
+				 
+			</div>
+			
+			
+		</div>
+	</div>
+	
+		
+	
+	<div class="span3 offset1">
+
+		
+		
+		<div class="well">
+			<h6 class="panel-title muted">CYTOSCAPE 3</h6>
+			<button class="btn btn-large btn-block" id="cy-app-install-btn">
+				<i></i> 
+				<h4></h4> 
+			</button>
+			<p id="downloadLink" style="display: none; font-size: 9px;">Or, for JAR file, click <a href= "/download/mcode/2.0.3">here</a> to download</p>
+			<p><strong>Version</strong> 2.0.3</p>
+			<p><strong>License</strong> <a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html" target="_blank">Click here</a></p>
+			<p><strong>Released</strong> 4 Jul 2023</p>
+			<p><strong>Works with</strong> <a href="http://www.cytoscape.org" target="_blank">Cytoscape 3.9</a></p>
+			<p><strong>Download Stats</strong> <a href="/download/stats/mcode/" target="_blank">Click here</a></p>
+			<span class="cytoscape-badge"></span>
+		</div>
+		
+		
+			
+		
+		
+		
+				
+		
+		
+		
+		
+		<div class="alert">
+			<ul class="nav nav-list">
+			<!--  li class="nav-header" -->
+			
+			<h5>		<!-- i class="fa fa-circle-o-notch fa-spin" style="font-size:16px"><!/i -->&ensp; RESOURCES</font> </h5>
+			<!--/li --> 
+
+				<li><a href="https://cytoscape.org/documentation_users.html" target="_blank">
+					<i class="icon-question-sign"></i>
+					Ask a question
+				</a></li>
+
+				<li><a href="https://www.biostars.org/local/search/page/?q=cytoscape+MCODE" target="_blank"><i class="icon-comment"></i> Search BioStars</a></li>
+				<li class="divider"></li>
+
+				
+				<li><a href="http://baderlab.org/Software/MCODE" target="_blank">
+					<i class="icon-home"></i> Website
+				</a></li>
+				
+
+				
+				<li><a href="https://mcode.readthedocs.io/en/latest/" target="_blank">
+					<i class="icon-book"></i> Tutorial
+				</a></li>
+				
+
+				
+				<li><a href="http://www.ncbi.nlm.nih.gov/pubmed/12525261" target="_blank">
+					<i class="icon-heart"></i> Cite this App
+				</a></li>
+				
+
+				
+				<li><a href="https://github.com/BaderLab/MCODE" target="_blank">
+					<i class="icon-list-alt"></i> Code Repository
+				</a></li>
+				
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+				
+				<li><a href="https://github.com/BaderLab/MCODE/blob/master/src/main/java/ca/utoronto/tdccbr/mcode/internal/CyActivator.java#L140" target="_blank">
+						
+						<i class="fa fa-gear fa-spin" style="color:black"></i>
+ Automation Support
+				</a></li>
+				
+
+				
+			</ul>
+		</div>
+		
+	</div>
+	
+</div>
+
+
+
+<div class="modal hide fade in" id="delete_ratings_modal">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h3>Delete All Ratings</h3>
+	</div>
+	<div class="modal-body">
+		Are you sure you want to delete all of your app's ratings?
+	</div>
+	<div class="modal-footer">
+		<form target="" method="post" style="margin: 0;">
+			<input type="hidden" name="csrfmiddlewaretoken" value="V4d0QAv9PxeOhKjXMG64qyEAxRVkVOklj6430VMr37Dq2u9X4u8afFN0t3LT6YHx">
+			<input type="hidden" name="action" value="ratings_delete_all">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<input type="submit" class="btn btn-danger" value="Yes, I'm Sure">
+		</form>
+	</div>
+</div>
+
+
+
+
+
+
+
+<script type="text/html" id="rate-popover-content">
+<div class="rating-stars">
+	<i class="rating-stars-empty icon-cy-stars-empty"></i>
+	<i class="rating-stars-filled icon-cy-stars-filled" style="width: 100%;"></i>
+	<span class="rating-spacer"></span>
+</div>
+<button class="btn btn-mini" id="rate-btn">Rate it <span id="rating">5</span> star(s)</button>
+</script>
+
+
+<script type="text/javascript" src="/static/apps/js/app_page.js"></script>
+	
+<script type="text/javascript">
+window.onload = cyBadge();
+window.onload = cyDownload();
+$('.has-tooltip').tooltip();
+
+AppPage.setup_install("mcode",
+	"MCODE",
+	"/download/mcode/2.0.3", 
+	"2.0.3",
+	"/help/getstarted_app_install");
+
+AppPage.setup_cy_2x_download_popover('/static/apps/img/plugins_dir.png');
+
+
+AppPage.setup_details();
+
+
+AppPage.setup_stars();
+
+AppPage.setup_release_notes();
+</script>
+
+
+    
+    <hr style="margin-top: 6em;">
+    <footer style="text-align: center;">
+      <a href="/help/about">About</a>
+      &bull;
+      <a href="/help/contact">Contact Us</a>
+
+      <span class="footer-divider"></span>
+
+      <a href="/apps/wall">Wall of Apps</a>
+      
+      <!--   <a href="/download/stats/">All Stats</a> -->
+    </footer>
+  </div>
+
+  
+  <script type="text/javascript" src="/static/common/js/check_browser_version.js"></script>
+
+  
+  <script type="text/javascript">
+    $(window).on('pageshow', function() {
+      
+    });
+  </script>
+</body>
+</html>
+

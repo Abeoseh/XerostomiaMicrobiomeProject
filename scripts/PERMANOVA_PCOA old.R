@@ -1,0 +1,49 @@
+## library packages 
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(openxlsx))
+suppressPackageStartupMessages(library(readxl))
+suppressPackageStartupMessages(library(vegan))
+# suppressPackageStartupMessages(library())
+
+
+## set working directory
+getwd()
+setwd("C:/Users/brean/Downloads/masters/atrium/XerostomiaMicrobiomeProject")
+getwd()
+
+## read file 
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25.xlsx")
+microbiome_data <- relocate(microbiome_data, Group, Condition, Site)
+microbiome_data <- microbiome_data[,1:length(microbiome_data)-1] %>% as.data.frame()
+
+## PERMANOVA
+metadata <- microbiome_data[,1:4]
+data_cols <- microbiome_data[,c(6:length(microbiome_data))]
+
+
+## PERMANOVA with effect of Group and Site independently
+permanova_independent <- adonis2(data_cols ~ Group + Site, data = metadata, method = "bray") %>% as.data.frame()
+permanova_independent$method <- "Group + Site"
+
+
+
+
+## PERMANOVA with interaction between Group and Site 
+permanova_interaction <- adonis2(data_cols ~ Group * Site, data = metadata, method = "bray") %>% as.data.frame()
+permanova_interaction$method <- "Group * Site"
+
+
+## write data to an excel file
+wb <- createWorkbook()
+addWorksheet(wb, "Group Site independently")
+writeData(wb, "Group Site independently", permanova_independent)
+
+addWorksheet(wb, "Group Site interaction")
+writeData(wb, "Group Site interaction", permanova_interaction)
+
+
+saveWorkbook(wb, "./output/permanova_results.xlsx", overwrite = TRUE)
+
+
+
+# write.csv(rbind(permanova_independent, permanova_interaction) ,"./output/permanova_results.csv")
