@@ -17,7 +17,7 @@ getwd()
 # output="./output/with_men"
 # output="./output/without_men_saliva"
 # output="./output/without_men_10percent_filtered"
-output="./output/without_men_saliva_10percent_filtered"
+# output="./output/without_men_saliva_10percent_filtered"
 
 
 ## read file  
@@ -25,7 +25,7 @@ output="./output/without_men_saliva_10percent_filtered"
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females.xlsx")
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva.xlsx")
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females 10 percent.xlsx")
-microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
+# microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
 
 
 

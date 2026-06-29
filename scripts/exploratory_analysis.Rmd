@@ -18,7 +18,7 @@ output = "./output/with_men"
 # output = "./output/without_men"
 
 getwd()
-knitr::opts_knit$set(root.dir = "C:/Users/brean/Downloads/masters/Atrium")
+knitr::opts_knit$set(root.dir = "C:/Users/brean/Downloads/masters/Atrium/Xerostomia")
 getwd()
 ```
 
@@ -218,7 +218,7 @@ compute_sum("Condition")
 ## I've attached an example of a demographics table. You can use MWU or Chi-square for statistical comparisons among the groups
 
 ```{r}
-
+getwd()
 demographics <- read_excel("./csv_files/female demographics.xlsx")
 demographics
 ```

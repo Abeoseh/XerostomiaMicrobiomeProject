@@ -1,3 +1,5 @@
+.libPaths( c( .libPaths(), "~/my_R_libs4.5.1") )
+
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidyverse))
@@ -10,22 +12,16 @@ suppressPackageStartupMessages(library(writexl))
 
 
 
-## Rscript ./scripts/relative_abundance.R "./csv_files/associated_timepoint/lognorm_data.csv" "./output/associated_timepoint/relative_abundance_" "hand associated" floor
-## Rscript ./scripts/relative_abundance.R "./csv_files/skinassoc_timepoint/lognorm_data.csv" "./output/skinassoc_timepoint/relative_abundance_" hand "hand associated"
-## Rscript ./scripts/relative_abundance.R "./csv_files/skin_floor_timepoint/lognorm_data.csv" "./output/skin_floor_timepoint/relative_abundance_" hand floor
 
-
-
-
-print("started ")
-getwd()
-setwd("C:/Users/brean/Downloads/masters/Atrium/")
-getwd()
+# print("started ")
+# getwd()
+# setwd("C:/Users/brean/Downloads/masters/Atrium/")
+# getwd()
 
 #### set output ####
 # output="./output/without_men_10percent_filtered/relative_abundance/relative_abundance.png"
 # output="./output/without_men_saliva/relative_abundance/relative_abundance.png"
-# output="./output/without_men_saliva_10percent_filtered/relative_abundance/relative_abundance.png"
+output="./output/without_men_saliva_10percent_filtered/relative_abundance/relative_abundance.png"
 
 
 #### read files ####
@@ -33,7 +29,12 @@ getwd()
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva.xlsx")
 microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
 
-microbiome_data$Group[microbiome_data$Group == "Control"] <- "Non-Xerostomia"
+microbiome_data$Group[microbiome_data$Group == "Control"] <- "NX"
+microbiome_data$Group[microbiome_data$Group == "Xerostomic"] <- "XS"
+
+
+microbiome_data$Group <- factor(microbiome_data$Group, levels = c("XS", "NX"))
+
 
 # lognorm_data$timepoint <- paste(lognorm_data$timepoint, "-",lognorm_data$Phenotype, "-" ,lognorm_data$sample_name, sep="")
 # 
@@ -84,7 +85,8 @@ plot <- ggplot(plot_data) +
   
   theme_grey( base_size = 18 ) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), legend.position = "bottom",
-        strip.text = element_text(face = "bold")) 
+        strip.text = element_text(face = "bold"),
+        legend.text = element_text(size=18)) 
 
 
 print(plot)
