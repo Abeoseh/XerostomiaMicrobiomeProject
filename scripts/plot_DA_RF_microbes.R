@@ -16,9 +16,16 @@ input <- args[1]
 auc_path <- args[2]
 output_dir <- args[3]
 
+# output_dir = "./output/without_men_saliva_10percent_filtered/ROC_fisher"
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
-# 
 # auc_df <- read.csv("./output/without_men_saliva_10percent_filtered/roc/auc_df.csv") %>% filter(AUC > 0.7)
+
+
+
+output_dir = "./output/without_men_10percent_filtered/ROC_fisher"
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females 10 percent.xlsx")
+auc_df <- read.csv("./output/without_men_10percent_filtered/roc/auc_df.csv") %>% filter(AUC > 0.7)
+
 
 
 microbiome_data <- read_excel(input)
@@ -32,7 +39,7 @@ df$Group[df$Group == "Control"] <- "NX"
 df$Group[df$Group == "Xerostomic"] <- "XS"
 df$Group <- factor(df$Group, levels = c("XS", "NX"))
 
-df$Taxa <- gsub(";s__", " ", gsub("g__|f__|o__|c__|p__|k__", "", df$Taxa))
+df$Taxa <- gsub("g__|f__|o__|c__|p__|k__|NA ", "", gsub(";s__|;", " ", df$Taxa))
 df <- df %>% mutate(Taxa = fct_reorder(Taxa, Amount, .fun = max, .desc = TRUE))
 
 
@@ -71,11 +78,11 @@ results <- AboveBelow %>%
   })
 
 
+results$FDR <-  p.adjust(results$p.value, method = "BH")
 
-results <- results %>%
-  mutate(FDR = p.adjust(p.value, method = "BH"))
 
-write.csv(results, paste(output_dir, "/fisher_results_one_mean.csv",sep=""))
+write.csv(results, paste(output_dir, "/fisher_results_one_mean.csv",sep=""), row.names = FALSE)
+
 
 ###### plot ###### 
 
@@ -97,7 +104,7 @@ pvals <- pvals %>%
 p <- ggplot(df, aes(as.factor(Group), Amount)) +
   geom_point() +
   geom_text(data = results,
-    aes(x = 1.5, y = 0, label = paste("p:",sprintf("%.2e", FDR))), inherit.aes = FALSE, size = 3) +
+    aes(x = 1.5, y = 0, label = paste("p-value",sprintf("%.2e", FDR))), inherit.aes = FALSE, size = 3) +
   geom_hline(data = meandf, aes(yintercept = means), color = "cornflowerblue", linetype = "solid", inherit.aes = FALSE) +
   # geom_crossbar(data = meandf,aes(x = as.factor(Group), y = means, ymin = means, ymax = means),
   #   width = 0.6, color = "cornflowerblue", fatten = 0, inherit.aes = FALSE) +
