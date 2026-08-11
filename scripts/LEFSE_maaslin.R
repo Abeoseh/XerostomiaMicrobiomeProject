@@ -17,8 +17,8 @@ suppressPackageStartupMessages(library('SummarizedExperiment'))
 
 ## set output dir
 # output="./output/without_men_saliva"
-# output="./output/without_men_10percent_filtered"
-output="./output/without_men_saliva_10percent_filtered"
+output="./output/without_men_10percent_filtered"
+# output="./output/without_men_saliva_10percent_filtered"
 
 
 
@@ -26,8 +26,8 @@ output="./output/without_men_saliva_10percent_filtered"
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25.xlsx")
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva.xlsx")
 # microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females.xlsx")
-# microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females 10 percent.xlsx")
-microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
+microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females 10 percent.xlsx")
+# microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
 
 
 microbiome_data$Group[ grep("Control", microbiome_data$Group) ] <- "NX"
@@ -104,7 +104,8 @@ for (column in metadata_cols){
 
         
         p$layers[[2]]$aes_params$fontface <- "bold"
-        p$layers[[2]]$aes_params$size <- 6
+        # p$layers[[2]]$aes_params$size <- 6
+        p$layers[[2]]$aes_params$size <- 5.5
         
         tiff(paste(output, "/lefse/plots/lefseresults",column,group1,group2,"_bold.tiff",sep=""), units="in", width=10, height=15, res=300)
 	      print(p)

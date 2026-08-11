@@ -107,7 +107,8 @@ for (i in seq_along(folds)){
   
 
   ## plot the roc curves
-  png(paste(output, "/plots/ROC_cv", i, ".png", sep=""))
+  jpeg(paste(output, "/plots/ROC_cv", i, ".jpg", sep=""), res = 600, height = 10000, width = 10000)
+  # par(mar = c(1, 1, 1, 1))
   p <- plot(rf_roc, col = "red", print.auc = TRUE)
   title(paste("ROC Curve of CV: ", i, sep=""), line = + 2.5, cex.main=1.5)
   p
@@ -135,10 +136,10 @@ g <- ggplot(filter(auc_df, CV != "avg"), aes(x = CV, y = AUC)) +
   geom_bar(stat = "identity", fill = "tomato") +
   ylim(0, 1) +
   geom_abline(slope = 0, intercept = avg_auc_line, col = "blue") +
-  theme_minimal(base_size = 14) +
+  theme_minimal(base_size = 20) +
   labs(title = "AUC per Fold", x = "Fold", y = "AUC")
 
-png(paste(output, "/plots/AUC_per_fold.png", sep=""))
+jpeg(paste(output, "/plots/AUC_per_fold.jpg", sep=""), res = 600, height = 9000, width = 9000)
 print(g)
 dev.off()
 
@@ -169,12 +170,12 @@ importance_all <- importance_all %>%
 g <- ggplot(importance_all, aes(x = reorder(Taxon, -Importance), y = Importance)) +
   geom_bar(stat = "identity", fill = ifelse(importance_all$pvalue_corrected < 0.49,'blue','black')) +
   coord_flip() +
-  theme_minimal(base_size = 14) +
+  theme_minimal(base_size = 25) +
   facet_wrap(~Fold) +
   labs(title = "Important Taxa",
        x = "Taxa", y = "Gini Importance")
 
-png(paste(output,"/plots/importance_bars.png", sep=""), width = 600, height=800)
+jpeg(paste(output,"/plots/importance_bars.jpg", sep=""), width = 9000, height = 9000, res = 600)
 print(g)
 dev.off()
 

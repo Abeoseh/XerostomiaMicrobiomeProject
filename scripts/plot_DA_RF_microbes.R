@@ -22,9 +22,9 @@ output_dir <- args[3]
 
 
 
-output_dir = "./output/without_men_10percent_filtered/ROC_fisher"
-microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females 10 percent.xlsx")
-auc_df <- read.csv("./output/without_men_10percent_filtered/roc/auc_df.csv") %>% filter(AUC > 0.7)
+# output_dir = "./output/without_men_10percent_filtered/ROC_fisher"
+# microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females 10 percent.xlsx")
+# auc_df <- read.csv("./output/without_men_10percent_filtered/roc/auc_df.csv") %>% filter(AUC > 0.7)
 
 
 
@@ -36,8 +36,8 @@ df = select(microbiome_data, Group, all_of(auc_df$Taxa)) %>%
   pivot_longer(auc_df$Taxa, names_to = "Taxa", values_to = "Amount")
 
 df$Group[df$Group == "Control"] <- "NX"
-df$Group[df$Group == "Xerostomic"] <- "XS"
-df$Group <- factor(df$Group, levels = c("XS", "NX"))
+df$Group[df$Group == "Xerostomic"] <- "XP"
+df$Group <- factor(df$Group, levels = c("XP", "NX"))
 
 df$Taxa <- gsub("g__|f__|o__|c__|p__|k__|NA ", "", gsub(";s__|;", " ", df$Taxa))
 df <- df %>% mutate(Taxa = fct_reorder(Taxa, Amount, .fun = max, .desc = TRUE))

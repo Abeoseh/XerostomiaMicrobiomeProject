@@ -12,6 +12,8 @@
 
 import requests ## python -m pip install requests
 from time import sleep
+from PIL import Image
+import io
 
 ####################################
 ## Format Genes for each Bacteria ##
@@ -19,11 +21,11 @@ from time import sleep
 
 ## genes should be a list
 
-# input = "./output/without_men/msea_significantRF/msea_results.csv" 
-# output = "./output/without_men/string_significantRF"
+input = "./output/without_men/msea_significantRF/msea_results.csv" 
+output = "./output/without_men/string_significantRF"
 
-input = "./output/without_men_saliva/msea_significantRF/msea_results.csv" 
-output = "./output/without_men_saliva/string_significantRF"
+# input = "./output/without_men_saliva/msea_significantRF/msea_results.csv" 
+# output = "./output/without_men_saliva/string_significantRF"
 
 
 gene_list = []
@@ -33,13 +35,15 @@ with open(input) as file:
     for line in file:
 
         ## use the q-value to only keep the significant gene interactions 
+        # print(line.strip().split(","))
         if float(line.strip().split(",")[3]) < 0.049:
             # print( f"q-value: { float(line.strip().split(',')[3]) }" )
             gene = line.strip().split(",")[0]
 
             bacteria = line.strip().split("[\'")[1].split("\']")[0].replace("\'","").split(",")
+            # print(bacteria)
             # if len(bacteria) == 3:
-            if len(bacteria) == 1:
+            if len(bacteria) == 3:
                 gene_list.append(gene)
 
             # for bacterium in bacteria: 
@@ -57,7 +61,8 @@ with open(input) as file:
 
 # print(bacteria_genes.keys())
 
-# for bacteria, my_genes in bacteria_genes.items():    
+# for bacteria, my_genes in bacteria_genes.items():  
+print("gene list")  
 print(gene_list)
 ############################
 ## Get STRING text output ##
@@ -135,13 +140,14 @@ response = requests.post(request_url, data=params)
 ## Save the network to file
 ##
 
-file_name = f"{output}/allbacteria_network.png"
+file_name = f"{output}/allbacteria_network.tif"
 print("Saving interaction network to %s" % file_name)
 
-with open(file_name, 'wb') as fh:
-    fh.write(response.content)
+img = Image.open(io.BytesIO(response.content))
 
-sleep(1)
+ 
+img.save(file_name, dpi=(600, 600))
+
 
 
 

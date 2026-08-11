@@ -17,6 +17,9 @@ cd $SLURM_SUBMIT_DIR
 module load R
 Rscript ./scripts/PERMANOVA_PCOA.R
 
+Rscript ./scripts/PERMANOVA_PCOA_saliva.R
+
+
 echo ""
 echo "======================================================"
 echo "End Time : $(date)"

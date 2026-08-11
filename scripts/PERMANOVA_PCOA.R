@@ -14,6 +14,7 @@ suppressPackageStartupMessages(library(ggplot2))
 ##### set working directory ####
 # getwd()
 # setwd("X:/OralMedRsch/Abeoseh Flemister/XerostomiaMicrobiomeProject/")
+setwd("C:/Users/brean/Downloads/masters/Atrium/Xerostomia")
 # getwd()
 
 #### set output dir ####
@@ -33,15 +34,15 @@ microbiome_data <- relocate(microbiome_data, Group, Condition, Site)
 microbiome_data <- microbiome_data[,1:length(microbiome_data)-1] %>% as.data.frame()
 
 microbiome_data$Group[ grep("Control", microbiome_data$Group) ] <- "NX"
-microbiome_data$Group[ grep("Xerostomic", microbiome_data$Group) ] <- "XS"
-microbiome_data$Group <- factor(microbiome_data$Group, levels = c("XS", "NX"))
+microbiome_data$Group[ grep("Xerostomic", microbiome_data$Group) ] <- "XP"
+microbiome_data$Group <- factor(microbiome_data$Group, levels = c("XP", "NX"))
 
 metadata <- microbiome_data[,1:4]
 metadata$Condition[metadata$Condition == "None"] <- ""
 metadata$Group_Condition <- paste(metadata$Group, metadata$Condition)
 metadata$Group_Condition_Site <- paste(metadata$Group_Condition, "-", metadata$Site, sep = "")
 metadata$Group_Site = paste(metadata$Group, "-", metadata$Site, sep = "")
-
+metadata$Taxa_unique <- str_remove(metadata$Taxa, "\\..")
 
 data_cols <- microbiome_data[,c(6:length(microbiome_data))]
 
@@ -49,15 +50,15 @@ data_cols <- microbiome_data[,c(6:length(microbiome_data))]
 
 
 ## PERMANOVA with effect of Group and Site independently
-permanova_independent <- adonis2(data_cols ~ Group + Site, data = metadata, method = "bray", by = "terms") %>% as.data.frame()
+permanova_independent <- adonis2(data_cols ~ Group + Site, data = metadata, method = "bray", by = "terms", strata = metadata$Taxa_unique) %>% as.data.frame()
 permanova_independent$method <- "Group + Site"
 
 ## PERMANOVA with interaction between Group and Site for xerostomia groups collasped
-permanova_interaction <- adonis2(data_cols ~ Group * Site, data = metadata, method = "bray", by = "terms") %>% as.data.frame()
+permanova_interaction <- adonis2(data_cols ~ Group * Site, data = metadata, method = "bray", by = "terms", strata = metadata$Taxa_unique) %>% as.data.frame()
 permanova_interaction$method <- "Group * Site"
 
 ## PERMANOVA with interaction between Group-Condition and Site for xerostomia groups separated 
-permanova_interaction_group_condition <- adonis2(data_cols ~ Group_Condition * Site, data = metadata, method = "bray", by = "terms") %>% as.data.frame()
+permanova_interaction_group_condition <- adonis2(data_cols ~ Group_Condition * Site, data = metadata, method = "bray", by = "terms", strata = metadata$Taxa_unique) %>% as.data.frame()
 permanova_interaction_group_condition$method <- "Group_Condition * Site"
 
 ## write data to an excel file
@@ -216,7 +217,7 @@ alpha_diversity <- function(df, metadata, metadata_column){
   
   rm(evenness, shannon_diversity, simpson_diversity)
   alpha_diversity_tidy <- alpha_diversity |> 
-    # select(-c(Group_Condition_Site, Group_Site)) |>
+    select(-c(Taxa_unique)) |>
     mutate(Taxa = row.names(df)) |>
     gather(key = alphadiv_index, value = alphadiv_values, 
            -Taxa, -Group, -Condition, -Site, -Group_Condition, -Group_Condition_Site, -Group_Site)
@@ -245,7 +246,7 @@ alpha_diversity <- function(df, metadata, metadata_column){
         # current_index <- filter(alpha_diversity_tidy, alphadiv_index == !!index & (metadata_column == !!group1 | metadata_column == !!group2 ))
         current_index <- alpha_diversity_tidy[alpha_diversity_tidy$alphadiv_index == index & (alpha_diversity_tidy[[metadata_column]] == group1 | alpha_diversity_tidy[[metadata_column]] == group2 ),]
         
-        current_index$Group <- factor(current_index$Group, levels = c("XS", "NX"))
+        current_index$Group <- factor(current_index$Group, levels = c("XP", "NX"))
         alpha_plot = ggplot(current_index, aes(!!metadata_column_var, alphadiv_values)) +
           labs(title = gsub("_", " ", index), y = index, caption = paste("p-value:", pval)) +
           geom_boxplot(aes(color = !!metadata_column_var)) +

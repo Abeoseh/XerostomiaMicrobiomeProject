@@ -30,10 +30,10 @@ output="./output/without_men_saliva_10percent_filtered/relative_abundance/relati
 microbiome_data <- read_excel("csv_files/Xero-Microbiome RA data patient matched AH 07 23 25 females saliva 10 percent.xlsx")
 
 microbiome_data$Group[microbiome_data$Group == "Control"] <- "NX"
-microbiome_data$Group[microbiome_data$Group == "Xerostomic"] <- "XS"
+microbiome_data$Group[microbiome_data$Group == "Xerostomic"] <- "XP"
 
 
-microbiome_data$Group <- factor(microbiome_data$Group, levels = c("XS", "NX"))
+microbiome_data$Group <- factor(microbiome_data$Group, levels = c("XP", "NX"))
 
 
 # lognorm_data$timepoint <- paste(lognorm_data$timepoint, "-",lognorm_data$Phenotype, "-" ,lognorm_data$sample_name, sep="")
