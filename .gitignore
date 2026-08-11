@@ -20,5 +20,3 @@ scripts/.ipynb_checkpoints/msea_example-checkpoint.ipynb
 scripts/.ipynb_checkpoints/multiple_genes_network-checkpoint.png
 scripts/.ipynb_checkpoints/roc-checkpoint.R
 scripts/__pycache__
-esm/examples/32_blaNDM/
-esm/examples/test_msa_output/
